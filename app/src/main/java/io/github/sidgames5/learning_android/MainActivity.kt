@@ -3,6 +3,7 @@ package io.github.sidgames5.learning_android
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
@@ -19,6 +20,10 @@ class MainActivity : AppCompatActivity() {
         textMoves = findViewById(R.id.textMoves)
         textPairs = findViewById(R.id.textPairs)
 
-        // https://youtu.be/C2DBDZKkLss?t=1183
+        board.adapter = MemoryBoardAdapter(this, 8)
+        board.setHasFixedSize(true)
+        board.layoutManager = GridLayoutManager(this, 2)
+
+        // https://youtu.be/C2DBDZKkLss?t=2235
     }
 }
