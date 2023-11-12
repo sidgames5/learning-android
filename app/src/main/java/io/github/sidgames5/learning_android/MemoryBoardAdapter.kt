@@ -10,13 +10,19 @@ import android.view.ViewGroup.MarginLayoutParams
 import android.widget.ImageButton
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import io.github.sidgames5.learning_android.models.BoardSize
 import kotlin.math.min
 
-class MemoryBoardAdapter(private val context: Context, private val pieces: Int) : RecyclerView.Adapter<MemoryBoardAdapter.ViewHolder>() {
+class MemoryBoardAdapter(
+    private val context: Context,
+    private val boardSize: BoardSize,
+    private val cardImages: List<Int>
+) : RecyclerView.Adapter<MemoryBoardAdapter.ViewHolder>() {
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val imageButton = itemView.findViewById<ImageButton>(R.id.imageButton)
 
         fun bind(position: Int) {
+            imageButton.setImageResource(cardImages[position])
             imageButton.setOnClickListener {
                 Log.i(TAG, "Clicked on position $position")
             }
@@ -30,8 +36,8 @@ class MemoryBoardAdapter(private val context: Context, private val pieces: Int) 
 
     @SuppressLint("MissingInflatedId")
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val cardWidth = parent.width / 2 - (2 * MARGIN_SIZE)
-        val cardHeight = parent.height / 4 - (2 * MARGIN_SIZE)
+        val cardWidth = parent.width / boardSize.getWidth() - (2 * MARGIN_SIZE)
+        val cardHeight = parent.height / boardSize.getHeight() - (2 * MARGIN_SIZE)
         val cardSideLength = min(cardWidth, cardHeight)
         val view:View = LayoutInflater.from(context).inflate(R.layout.memory_card, parent, false)
         val layoutParams = view.findViewById<CardView>(R.id.cardView).layoutParams as MarginLayoutParams
@@ -41,7 +47,7 @@ class MemoryBoardAdapter(private val context: Context, private val pieces: Int) 
         return ViewHolder(view)
     }
 
-    override fun getItemCount() = pieces
+    override fun getItemCount() = boardSize.cards
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(position)
