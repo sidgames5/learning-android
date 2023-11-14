@@ -11,22 +11,29 @@ import android.widget.ImageButton
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import io.github.sidgames5.learning_android.models.BoardSize
+import io.github.sidgames5.learning_android.models.MemoryCard
 import kotlin.math.min
 
 class MemoryBoardAdapter(
     private val context: Context,
     private val boardSize: BoardSize,
-    private val cardImages: List<Int>
+    private val cards: List<MemoryCard>,
+    private val cardClickListener: CardClickListener
 ) : RecyclerView.Adapter<MemoryBoardAdapter.ViewHolder>() {
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val imageButton = itemView.findViewById<ImageButton>(R.id.imageButton)
 
         fun bind(position: Int) {
-            imageButton.setImageResource(cardImages[position])
+            val card = cards[position]
+            imageButton.setImageResource(if (card.isFaceUp) card.id else R.drawable.ic_launcher_background)
             imageButton.setOnClickListener {
-                Log.i(TAG, "Clicked on position $position")
+                cardClickListener.onCardClicked(position)
             }
         }
+    }
+
+    interface CardClickListener {
+        fun onCardClicked(position: Int)
     }
 
     companion object {
