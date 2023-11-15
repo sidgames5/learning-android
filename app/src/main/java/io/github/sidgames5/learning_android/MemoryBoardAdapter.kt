@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import android.view.ViewGroup.MarginLayoutParams
 import android.widget.ImageButton
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import io.github.sidgames5.learning_android.models.BoardSize
 import io.github.sidgames5.learning_android.models.MemoryCard
@@ -26,6 +28,9 @@ class MemoryBoardAdapter(
         fun bind(position: Int) {
             val card = cards[position]
             imageButton.setImageResource(if (card.isFaceUp) card.id else R.drawable.ic_launcher_background)
+            imageButton.alpha = if (card.isFaceUp) .4f else 1.0f
+            val colorStateList = if (card.isMatched) ContextCompat.getColorStateList(context, R.color.color_gray) else null
+            ViewCompat.setBackgroundTintList(imageButton, colorStateList)
             imageButton.setOnClickListener {
                 cardClickListener.onCardClicked(position)
             }
