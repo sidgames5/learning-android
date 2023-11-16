@@ -4,8 +4,10 @@ import io.github.sidgames5.learning_android.util.DEFAULT_ICONS
 
 class MemoryGame(private val boardSize: BoardSize) {
     private var indexOfSingleSelectedCard:Int? = null
+    private var numFlips = 0
     
     fun flipCard(position: Int):Boolean {
+        numFlips++
         val card = cards[position]
         var foundMatch = false
         
@@ -44,6 +46,10 @@ class MemoryGame(private val boardSize: BoardSize) {
 
     fun isCardFaceUp(position: Int): Boolean {
         return cards[position].isFaceUp
+    }
+
+    fun getMoves(): Int {
+        return numFlips / 2
     }
 
     var cards:List<MemoryCard>

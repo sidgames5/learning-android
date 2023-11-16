@@ -1,10 +1,12 @@
 package io.github.sidgames5.learning_android
 
+import android.animation.ArgbEvaluator
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -42,7 +44,9 @@ class MainActivity : AppCompatActivity() {
         board.setHasFixedSize(true)
         board.layoutManager = GridLayoutManager(this, boardSize.getWidth())
 
-        // https://youtu.be/C2DBDZKkLss?t=4820
+        textPairs.setTextColor(ContextCompat.getColor(this, R.color.color_progress_none))
+
+        // https://youtu.be/C2DBDZKkLss?t=5265
     }
 
     private fun updateGameWithFlip(position: Int) {
@@ -56,7 +60,14 @@ class MainActivity : AppCompatActivity() {
         }
         if (memoryGame.flipCard(position)) {
             Log.i("MainActivity", "Found a match! Pairs found: ${memoryGame.pairsFound}")
+            val color = ArgbEvaluator().evaluate((memoryGame.pairsFound / boardSize.getPairs()).toFloat(), ContextCompat.getColor(this, R.color.color_progress_none), ContextCompat.getColor(this, R.color.color_progress_full)) as Int
+            textPairs.setTextColor(color)
+            textPairs.text = "Pairs: ${memoryGame.pairsFound} / ${boardSize.getPairs()}"
+            if (memoryGame.haveWonGame()) {
+                Snackbar.make(clRoot, "You won!", Snackbar.LENGTH_LONG).show()
+            }
         }
+        textMoves.text = "Moves: ${memoryGame.getMoves()}"
         adapter.notifyDataSetChanged()
     }
 }
