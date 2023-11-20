@@ -1,6 +1,7 @@
 package io.github.sidgames5.learning_android
 
 import android.animation.ArgbEvaluator
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -19,8 +20,13 @@ import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClic
 import com.google.android.material.snackbar.Snackbar
 import io.github.sidgames5.learning_android.models.BoardSize
 import io.github.sidgames5.learning_android.models.MemoryGame
+import io.github.sidgames5.learning_android.util.EXTRA_BOARD_SIZE
 
 class MainActivity : AppCompatActivity() {
+
+    companion object {
+        private const val CREATE_REQUEST_CODE = 248
+    }
 
     private lateinit var adapter: MemoryBoardAdapter
     private lateinit var memoryGame: MemoryGame
@@ -42,7 +48,7 @@ class MainActivity : AppCompatActivity() {
 
         setupBoard()
 
-        // https://youtu.be/C2DBDZKkLss?t=6119
+        // https://youtu.be/C2DBDZKkLss?t=6745
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -66,8 +72,29 @@ class MainActivity : AppCompatActivity() {
                 showNewSizeDialog()
                 return true
             }
+            R.id.mi_custom -> {
+                showCreationDialog()
+                return true
+            }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun showCreationDialog() {
+        val bsv = LayoutInflater.from(this).inflate(R.layout.dialog_board_size, null)
+        val rgSize = bsv.findViewById<RadioGroup>(R.id.radioGroup)
+        showAlertDialog("Create your own memory board", bsv, View.OnClickListener {
+            // Set new value for size
+            val desiredBoardSize = when (rgSize.checkedRadioButtonId) {
+                R.id.rbEasy -> BoardSize.EASY
+                R.id.rbMed -> BoardSize.MEDIUM
+                else -> BoardSize.HARD
+            }
+            // Navigate to new activity
+            val intent = Intent(this, CreateActivity::class.java)
+            intent.putExtra(EXTRA_BOARD_SIZE, desiredBoardSize)
+            startActivityForResult(intent, CREATE_REQUEST_CODE)
+        })
     }
 
     private fun showNewSizeDialog() {
