@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
 
         setupBoard()
 
-        // https://youtu.be/C2DBDZKkLss?t=7084
+        // https://youtu.be/C2DBDZKkLss?t=7600
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
