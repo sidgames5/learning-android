@@ -32,7 +32,7 @@ class CreateActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         boardSize = intent.getSerializableExtra(EXTRA_BOARD_SIZE) as BoardSize
-        imagesRequired = boardSize.getPairs() * 2
+        imagesRequired = boardSize.getPairs()
         supportActionBar?.title = "Choose ${imagesRequired - imagesAdded} pictures"
 
         rvImagePicker.adapter = ImagePickerAdapter(this, chosenImageUris, boardSize)

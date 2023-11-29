@@ -46,9 +46,14 @@ class MainActivity : AppCompatActivity() {
         textMoves = findViewById(R.id.textMoves)
         textPairs = findViewById(R.id.textPairs)
 
+        // REMOVE THIS IN PRODUCTION
+        val intent = Intent(this, CreateActivity::class.java)
+        intent.putExtra(EXTRA_BOARD_SIZE, BoardSize.MEDIUM)
+        startActivity(intent)
+
         setupBoard()
 
-        // https://youtu.be/C2DBDZKkLss?t=7600
+        // https://youtu.be/C2DBDZKkLss?t=7915
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

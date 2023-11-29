@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import io.github.sidgames5.learning_android.models.BoardSize
 import kotlin.math.min
 
-class ImagePickerAdapter(private val context: Context, private val chosenImageUris: List<Uri>, private val boardSize: BoardSize) : RecyclerView.Adapter<ImagePickerAdapter.ViewHolder>() {
+class ImagePickerAdapter(private val context: Context, private val imageUris: List<Uri>, private val boardSize: BoardSize) : RecyclerView.Adapter<ImagePickerAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.card_image, parent, false)
@@ -26,10 +26,26 @@ class ImagePickerAdapter(private val context: Context, private val chosenImageUr
     override fun getItemCount() = boardSize.getPairs()
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        if (position < imageUris.size) {
+            holder.bind(imageUris[position])
+        } else {
+            holder.bind()
+        }
     }
 
     inner class ViewHolder(itemView:View) : RecyclerView.ViewHolder(itemView) {
+        private val ivCustomImage = itemView.findViewById<ImageView>(R.id.ivCustomImage)
+
+        fun bind(uri: Uri) {
+            ivCustomImage.setImageURI(uri)
+            ivCustomImage.setOnClickListener(null)
+        }
+
+        fun bind() {
+            ivCustomImage.setOnClickListener {
+                // launch intent for select photos
+            }
+        }
 
     }
 
