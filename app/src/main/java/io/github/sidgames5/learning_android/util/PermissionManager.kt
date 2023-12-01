@@ -6,23 +6,20 @@ import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
-class PermissionManager {
+object PermissionManager {
+    fun check(context:Context, permission:String):Boolean {
+        return ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED
+    }
 
-    companion object {
-        fun check(context:Context, permission:String):Boolean {
-            return ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED
-        }
-
-        fun grant(activity: Activity?, permission: String, requestCode:Int,  persistent:Boolean? = false):Boolean {
-            ActivityCompat.requestPermissions(activity!!, arrayOf(permission), requestCode)
-            return if (check(activity, permission)) {
-                true
+    fun grant(activity: Activity?, permission: String, requestCode:Int,  persistent:Boolean? = false):Boolean {
+        ActivityCompat.requestPermissions(activity!!, arrayOf(permission), requestCode)
+        return if (check(activity, permission)) {
+            true
+        } else {
+            if (persistent == true) {
+                grant(activity, permission, requestCode, persistent)
             } else {
-                if (persistent == true) {
-                    grant(activity, permission, requestCode, persistent)
-                } else {
-                    false
-                }
+                false
             }
         }
     }
